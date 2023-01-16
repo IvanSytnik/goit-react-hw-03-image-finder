@@ -3,12 +3,13 @@ import { Hearts  } from 'react-loader-spinner'
 import Searchbar from './Searchbar/Searchbar';
 import axios from 'axios';
 import ImageGallery from './ImageGallery/ImageGallery'
+import Modal from './Modal/Modal'
 import Button from './Button/Button'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify'
+import './styles.css'
 const keyApi = '26520877-3fd7b67c65e333110b622b89f';
-
 class ImageFinder extends Component {
     state = {
       name: null,
@@ -16,13 +17,30 @@ class ImageFinder extends Component {
       isLoading: false,
       isError: false,
       page: 1,
-      button: false
+      showButton: false,
+      showModal: false,
+      photo: ''
+    }
+    openPhoto  = (event) => {
+      
+      const [img] = event.currentTarget.children
+        this.setState({
+          photo: img.alt
+        })
+        this.toggleModal()
+      }
+    toggleModal = () => {
+      
+      this.setState(({showModal}) => ({
+        showModal: !showModal
+      }))
     }
 
     handleFormSubmit= submitName => {
       this.setState({
         name: submitName,
-        page: 1
+        page: 1,
+        data: []
       })
     }
   
@@ -52,7 +70,7 @@ class ImageFinder extends Component {
         else {
           this.setState({
             data: data.hits,
-            button: true, 
+            showButton: true, 
             page: 2
           })
         }
@@ -79,7 +97,7 @@ class ImageFinder extends Component {
         data: [...update.data, ...data.hits]
       }))
       if(this.state.page*12 >= data.total) {
-        this.setState({button: false})
+        this.setState({showModal: false})
         return toast.error(`No more photo`)
       }
      
@@ -100,12 +118,15 @@ class ImageFinder extends Component {
      
       return(
         <>
+        <div className="App">
         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar> 
-        {this.state.data.length > 0 && (<ImageGallery items={this.state.data}/>)}
-        
+        {this.state.data.length > 0 && (<ImageGallery items={this.state.data} onClick={this.openPhoto}/>)}
+        {this.state.showModal && (<Modal onClose={this.toggleModal} photo={this.state.photo}/>)}
         <ToastContainer autoClose={3000}/>
         {this.state.isLoading && (<Hearts color="red"/>)}
-        {this.state.button && (<Button onClick={this.fetchData}/>)}
+        {this.state.showButton && (<Button onClick={this.fetchData}/>)}
+        </div>
+        
         </>
       )
     }
@@ -113,6 +134,6 @@ class ImageFinder extends Component {
 
 export const App = () => {
   return (
-   <ImageFinder/>
+   <ImageFinder className="App"/>
   );
 };
