@@ -21,28 +21,7 @@ class ImageFinder extends Component {
       showModal: false,
       photo: ''
     }
-    openPhoto  = (event) => {
-      
-      const [img] = event.currentTarget.children
-        this.setState({
-          photo: img.alt
-        })
-        this.toggleModal()
-      }
-    toggleModal = () => {
-      
-      this.setState(({showModal}) => ({
-        showModal: !showModal
-      }))
-    }
-
-    handleFormSubmit= submitName => {
-      this.setState({
-        name: submitName,
-        page: 1,
-        data: []
-      })
-    }
+    
   
   async componentDidUpdate(prevProps, prevState) {
     if(prevState.name !== this.state.name) {
@@ -113,6 +92,30 @@ class ImageFinder extends Component {
           }
         ))
     }
+  }
+
+  openPhoto  = (event) => {
+      
+    const [img] = event.currentTarget.children
+      this.setState({
+        photo: img.alt
+      })
+      this.toggleModal()
+    }
+  toggleModal = () => {
+    
+    this.setState(({showModal}) => ({
+      showModal: !showModal
+    }))
+  }
+
+  handleFormSubmit= submitName => {
+    this.setState({
+      name: submitName,
+      page: 1,
+      data: [],
+      showButton: false,
+    })
   }
     render() {
      
