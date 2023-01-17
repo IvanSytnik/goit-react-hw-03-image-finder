@@ -10,6 +10,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify'
 import './styles.css'
 const keyApi = '26520877-3fd7b67c65e333110b622b89f';
+const Container = () => {
+  return(
+    <div className="container">
+     <Hearts color="red"/>
+    </div>
+  )
+}
 class ImageFinder extends Component {
     state = {
       name: null,
@@ -121,14 +128,14 @@ class ImageFinder extends Component {
      
       return(
         <>
-        <div className="App">
+        
         <Searchbar onSubmit={this.handleFormSubmit}></Searchbar> 
         {this.state.data.length > 0 && (<ImageGallery items={this.state.data} onClick={this.openPhoto}/>)}
         {this.state.showModal && (<Modal onClose={this.toggleModal} photo={this.state.photo}/>)}
         <ToastContainer autoClose={3000}/>
-        {this.state.isLoading && (<Hearts color="red"/>)}
+        {this.state.isLoading && (<Container></Container>)}
         {this.state.showButton && (<Button onClick={this.fetchData}/>)}
-        </div>
+       
         
         </>
       )
@@ -137,6 +144,6 @@ class ImageFinder extends Component {
 
 export const App = () => {
   return (
-   <ImageFinder className="App"/>
+   <ImageFinder />
   );
 };

@@ -2,7 +2,7 @@ import '../styles.css'
 import PropTypes from 'prop-types';
 const Button = ({onClick}) => {
     return(
-    <div className='container-btn'>
+    <div className='container'>
         <button className='Button' onClick={onClick} type="button">Load more</button>
     </div>
     )
