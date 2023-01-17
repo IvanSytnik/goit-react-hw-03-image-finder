@@ -54,9 +54,9 @@ class ImageFinder extends Component {
           return toast.error(`No photo with ${this.state.name}`)
         }
         else {
+          this.openButton(data.totalHits, this.state.page)
           this.setState({
             data: data.hits,
-            showButton: true, 
             page: 2
           })
         }
@@ -73,6 +73,15 @@ class ImageFinder extends Component {
     }
      
    }
+   openButton = (number, page) => {
+    if(page*12 >= number) {
+      this.setState({showButton: false})
+      return toast.error(`No more photo`)
+    }
+    else {
+      return  this.setState({showButton: true})
+    }
+   }
    fetchData = async () => {
     this.setState({isLoading: true})
     try{
@@ -82,10 +91,7 @@ class ImageFinder extends Component {
       this.setState((update) =>({
         data: [...update.data, ...data.hits]
       }))
-      if(this.state.page*12 >= data.total) {
-        this.setState({showModal: false})
-        return toast.error(`No more photo`)
-      }
+      this.openButton(data.totalHits, this.state.page)
      
       } catch(error) {
         this.setState({
